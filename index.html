@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Nom Nom Diary 🍓</title>
+  <meta name="theme-color" content="#ffb3d1" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Gaegu:wght@400;700&family=Patrick+Hand&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <!-- floating background doodles -->
+  <div class="bg-doodles" aria-hidden="true">
+    <span style="--x:6%;--y:10%;--d:0s">✿</span>
+    <span style="--x:88%;--y:8%;--d:1.2s">♡</span>
+    <span style="--x:14%;--y:55%;--d:2s">★</span>
+    <span style="--x:92%;--y:48%;--d:.6s">✿</span>
+    <span style="--x:5%;--y:88%;--d:1.8s">♡</span>
+    <span style="--x:80%;--y:90%;--d:.3s">★</span>
+    <span style="--x:50%;--y:3%;--d:2.4s">✧</span>
+    <span style="--x:48%;--y:96%;--d:1s">✧</span>
+  </div>
+
+  <main class="wrap">
+    <!-- HEADER -->
+    <header class="hero">
+      <button class="mascot-btn" id="mascot" aria-label="Poke the mascot">
+        <svg viewBox="0 0 120 120" class="mascot" id="mascotSvg">
+          <!-- ears -->
+          <path d="M22 44 L26 12 L50 30 Z" fill="#ffb3d1" stroke="#7a3b58" stroke-width="3" stroke-linejoin="round"/>
+          <path d="M98 44 L94 12 L70 30 Z" fill="#ffb3d1" stroke="#7a3b58" stroke-width="3" stroke-linejoin="round"/>
+          <path d="M30 34 L32 22 L42 30 Z" fill="#ff7fb0"/>
+          <path d="M90 34 L88 22 L78 30 Z" fill="#ff7fb0"/>
+          <!-- body -->
+          <ellipse cx="60" cy="68" rx="46" ry="42" fill="#ffd1e3" stroke="#7a3b58" stroke-width="3"/>
+          <!-- eyes -->
+          <g class="eyes">
+            <ellipse cx="42" cy="64" rx="5" ry="7" fill="#7a3b58"/>
+            <ellipse cx="78" cy="64" rx="5" ry="7" fill="#7a3b58"/>
+            <circle cx="44" cy="61" r="1.8" fill="#fff"/>
+            <circle cx="80" cy="61" r="1.8" fill="#fff"/>
+          </g>
+          <!-- cheeks -->
+          <ellipse cx="30" cy="78" rx="8" ry="5" fill="#ff8fb8" opacity=".6"/>
+          <ellipse cx="90" cy="78" rx="8" ry="5" fill="#ff8fb8" opacity=".6"/>
+          <!-- mouth -->
+          <path class="mouth" d="M52 78 Q56 86 60 78 Q64 86 68 78" fill="none" stroke="#7a3b58" stroke-width="3" stroke-linecap="round"/>
+          <!-- whiskers -->
+          <path d="M14 66 L26 68 M14 74 L26 72 M106 66 L94 68 M106 74 L94 72" stroke="#7a3b58" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+      </button>
+      <div class="hero-text">
+        <h1>Nom Nom Diary</h1>
+        <p class="greeting" id="greeting">Hi cutie 💕</p>
+        <p class="bubble" id="bubble">Tell me what yummy things you ate today!</p>
+      </div>
+      <button class="icon-btn gear" id="openSettings" aria-label="Settings" title="Settings">⚙️</button>
+    </header>
+
+    <!-- SUMMARY -->
+    <section class="card summary">
+      <div class="tabs" role="tablist">
+        <button class="tab active" id="tabMonth" data-mode="month">🌸 Month</button>
+        <button class="tab" id="tabYear" data-mode="year">🌷 Year</button>
+      </div>
+
+      <div class="period-nav">
+        <button class="icon-btn" id="prev" aria-label="Previous">‹</button>
+        <h2 id="periodLabel">October 2026</h2>
+        <button class="icon-btn" id="next" aria-label="Next">›</button>
+      </div>
+
+      <p class="total-label" id="totalLabel">Total spent this month</p>
+      <div class="total" id="total">₹0</div>
+
+      <div class="stats">
+        <div class="stat"><span class="stat-num" id="statCount">0</span><span>meals</span></div>
+        <div class="stat"><span class="stat-num" id="statAvg">₹0</span><span>avg / meal</span></div>
+        <div class="stat"><span class="stat-num" id="statMax">₹0</span><span>priciest</span></div>
+      </div>
+
+      <div class="budget hidden" id="budgetBox">
+        <div class="budget-top"><span id="budgetText">Budget</span><span id="budgetPct"></span></div>
+        <div class="bar"><div class="bar-fill" id="budgetFill"></div></div>
+      </div>
+
+      <button class="btn secondary" id="openHistory">📖 History</button>
+    </section>
+
+    <!-- ADD MEAL -->
+    <section class="card add">
+      <h2>✏️ Add a meal</h2>
+      <form id="mealForm" autocomplete="off">
+        <div class="chips" id="typeChips">
+          <label><input type="radio" name="type" value="breakfast" /><span>🥞 Breakfast</span></label>
+          <label><input type="radio" name="type" value="lunch" checked /><span>🍱 Lunch</span></label>
+          <label><input type="radio" name="type" value="dinner" /><span>🍜 Dinner</span></label>
+          <label><input type="radio" name="type" value="snack" /><span>🍡 Snack</span></label>
+          <label><input type="radio" name="type" value="treat" /><span>🧋 Treat</span></label>
+        </div>
+
+        <div class="row">
+          <label class="field">
+            <span>Price <b class="req">*</b></span>
+            <div class="money"><i id="currencyIcon">₹</i><input type="number" id="price" min="0" step="0.01" inputmode="decimal" placeholder="0.00" required /></div>
+          </label>
+          <label class="field">
+            <span>Date</span>
+            <input type="date" id="date" required />
+          </label>
+        </div>
+
+        <label class="field">
+          <span>What did you eat? <small>(optional)</small></span>
+          <input type="text" id="name" maxlength="60" placeholder="e.g. paneer wrap + iced tea" />
+        </label>
+
+        <button class="btn primary" type="submit" id="submitBtn">Save meal 🍓</button>
+        <button class="btn ghost hidden" type="button" id="cancelEdit">Cancel edit</button>
+      </form>
+    </section>
+
+    <!-- LIST -->
+    <section class="card list">
+      <h2 id="listTitle">🍽️ Meals this month</h2>
+      <ul id="mealList" class="meal-list"></ul>
+      <p class="empty hidden" id="emptyMsg">Nothing here yet… let's add something yummy! 🍙</p>
+    </section>
+
+    <footer class="foot">made with 💗 just for you</footer>
+  </main>
+
+  <!-- HISTORY MODAL -->
+  <dialog id="historyModal">
+    <div class="modal-head">
+      <h2>📖 Spending history</h2>
+      <button class="icon-btn" data-close aria-label="Close">✕</button>
+    </div>
+    <div class="tabs">
+      <button class="tab active" data-hmode="month">Monthly</button>
+      <button class="tab" data-hmode="year">Yearly</button>
+    </div>
+    <ul id="historyList" class="history-list"></ul>
+    <p class="empty hidden" id="historyEmpty">No history yet — your first meal will show up here ✨</p>
+  </dialog>
+
+  <!-- SETTINGS MODAL -->
+  <dialog id="settingsModal">
+    <div class="modal-head">
+      <h2>⚙️ Settings</h2>
+      <button class="icon-btn" data-close aria-label="Close">✕</button>
+    </div>
+    <label class="field"><span>Your name</span><input type="text" id="setName" maxlength="20" placeholder="cutie" /></label>
+    <div class="row">
+      <label class="field"><span>Currency</span>
+        <select id="setCurrency">
+          <option>₹</option><option>$</option><option>€</option><option>£</option><option>¥</option><option>₩</option>
+        </select>
+      </label>
+      <label class="field"><span>Monthly budget <small>(optional)</small></span>
+        <input type="number" id="setBudget" min="0" step="1" placeholder="e.g. 6000" />
+      </label>
+    </div>
+    <button class="btn primary" id="saveSettings">Save 💕</button>
+    <hr />
+    <p class="hint">Your diary lives in this browser only. Download a backup now and then so nothing gets lost 🧸</p>
+    <div class="row">
+      <button class="btn secondary" id="exportBtn">⬇️ Backup</button>
+      <label class="btn secondary file-btn">⬆️ Restore<input type="file" id="importFile" accept="application/json" hidden /></label>
+    </div>
+    <button class="btn danger" id="wipeBtn">Clear everything</button>
+  </dialog>
+
+  <div class="toast" id="toast" role="status"></div>
+  <script src="script.js"></script>
+</body>
+</html>
